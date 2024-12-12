@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hospital List</h1>
+    <table id="hospital-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Province</th>
+                <th>City</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be populated dynamically -->
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script>
+        function loadCSV() {
+            const csvFilePath = "/hospitals.csv";
+
+            Papa.parse(csvFilePath, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data;
+                    const tableBody = document.getElementById('hospital-table').getElementsByTagName('tbody')[0];
+
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.name}</td>
+                            <td>${row.province}</td>
+                            <td>${row.city}</td>
+                            <td>${row.type}</td>
+                            <td>${row.status}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                }
+            });
+        }
+
+        loadCSV();
+    </script>
+</body>
+</html>
